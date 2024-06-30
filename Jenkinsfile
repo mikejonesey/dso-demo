@@ -31,6 +31,7 @@ pipeline {
     }
     stage('Package') {
       parallel {
+        
         stage('Create Jarfile') {
           steps {
             container('maven') {
@@ -38,6 +39,15 @@ pipeline {
             }
           }
         }
+        
+        stage('OCI Image BnP') {
+          steps {
+            container('kaniko') {
+              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/mikejonesey/dso-demo'
+            }
+          }
+        }
+
       }
     }
 
