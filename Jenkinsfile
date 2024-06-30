@@ -18,8 +18,9 @@ pipeline {
         }
       }
     }
-    stage('Test') {
+    stage('Static Analysis') {
       parallel {
+
         stage('Unit Tests') {
           steps {
             container('maven') {
@@ -27,6 +28,17 @@ pipeline {
             }
           }
         }
+
+        stage('SCA') {
+          steps {
+            container('maven') {
+              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                sh 'ls && pwd && mvn org.owasp:dependency-check-maven:check -f pom.xml'
+              }
+            }
+          }
+        }
+        
       }
     }
     stage('Package') {
@@ -58,4 +70,12 @@ pipeline {
       }
     }
   }
+  
+  post {
+    always {
+      archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependancy-check-report.html', fingerprint: true, onlyIfSuccessful: true
+      // dependencyCheckPublisher pattern: 'report.xml'
+    }
+  }
+  
 }
