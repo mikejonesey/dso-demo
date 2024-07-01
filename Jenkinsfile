@@ -33,7 +33,7 @@ pipeline {
           steps {
             container('maven') {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                sh 'ls && pwd && mvn org.owasp:dependency-check-maven:check -f pom.xml'
+                sh 'mvn org.owasp:dependency-check-maven:check -f pom.xml'
               }
             }
           }
