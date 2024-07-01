@@ -118,7 +118,7 @@ pipeline {
         stage('Image Linting') {
           steps {
             container('dockle') {
-              sh 'dockle docker.io/yourimage'
+              sh 'dockle mikejonesey/dso-demo'
             }
           }
         }
@@ -126,7 +126,7 @@ pipeline {
         stage('Image Scanning') {
           steps {
             container('trivy') {
-              sh 'trivy image --timeout 10m --exit-code 1 yourimage'
+              sh 'trivy image --timeout 10m --exit-code 1 mikejonesey/dso-demo'
             }
           }
         }
