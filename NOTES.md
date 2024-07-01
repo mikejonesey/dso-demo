@@ -20,3 +20,12 @@ docker run --rm -e "WORKSPACE=${PWD}" -v "$PWD:/app" shiftleft/sast-scan:v2.1.2 
 
 or use SonarQube...
 
+---
+
+# Dockle
+
+```
+docker run --rm goodwithtech/dockle:latest docker.io/docker-hub-username/image-to-be-analyzed
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock goodwithtech/dockle:latest mikejonesey/dso-demo
+```
+

@@ -1,0 +1,3 @@
+# ensure repo files don't go to container
+.git
+Dockerfile

@@ -52,6 +52,18 @@ spec:
       command:
         - cat 
       tty: true
+    - name: dockle
+      image: goodwithtech/dockle:latest
+      imagePullPolicy: IfNotPresent
+      command:
+        - cat 
+      tty: true
+    - name: trivy
+      image: bitnami/trivy:latest
+      imagePullPolicy: IfNotPresent
+      command:
+        - cat 
+      tty: true
   volumes:
     - name: m2
       hostPath:

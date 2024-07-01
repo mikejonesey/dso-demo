@@ -112,6 +112,28 @@ pipeline {
       }
     }
 
+    stage('Image Analysis') {
+      parallel {
+
+        stage('Image Linting') {
+          steps {
+            container('dockle') {
+              sh 'dockle docker.io/yourimage'
+            }
+          }
+        }
+
+        stage('Image Scanning') {
+          steps {
+            container('trivy') {
+              sh 'trivy image --timeout 10m --exit-code 1 yourimage'
+            }
+          }
+        }
+        
+      }
+    }
+
     stage('Deploy to Dev') {
       steps {
         // TODO
