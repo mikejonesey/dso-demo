@@ -14,7 +14,7 @@ spec:
         - name: m2
           mountPath: /root/.m2/
     - name: docker-tools
-      image: rmkanda/docker-tools:latest
+      image: mikejonesey/docker-tools:latest
       command:
         - cat
       tty: true
@@ -49,18 +49,6 @@ spec:
     - name: slscan
       image: shiftleft/sast-scan:v2.1.2
       imagePullPolicy: Always
-      command:
-        - cat 
-      tty: true
-    - name: dockle
-      image: goodwithtech/dockle:latest
-      imagePullPolicy: IfNotPresent
-      command:
-        - cat 
-      tty: true
-    - name: trivy
-      image: bitnami/trivy:latest
-      imagePullPolicy: IfNotPresent
       command:
         - cat 
       tty: true
