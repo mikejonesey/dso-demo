@@ -8,7 +8,7 @@ pipeline {
   }
   environment {
     BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
-    IMAGE_TAG = "${BRANCH_NAME}-${GIT_COMMIT,length=7}-${BUILD_TS}"
+    IMAGE_TAG = "${BRANCH_NAME}-${GIT_COMMIT[0..7]}-${BUILD_TS}"
   }
   stages {
     stage('Build') {
