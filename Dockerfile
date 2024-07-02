@@ -7,7 +7,7 @@ RUN mvn package -DskipTests
 FROM openjdk:18-alpine AS run
 
 # Sec Patch
-RUN apk update && apk upgrade libtasn1 zlib busybox libcrypto1.1 libretls libssl1.1 ssl_client
+RUN apk upgrade --no-cache libtasn1 zlib busybox libcrypto1.1 libretls libssl1.1 ssl_client
 
 # Copy from build
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /run/demo.jar
