@@ -6,6 +6,10 @@ pipeline {
       idleMinutes 1
     }
   }
+  environment {
+    COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
+  }
   stages {
     stage('Build') {
       parallel {
@@ -104,7 +108,7 @@ pipeline {
         stage('OCI Image BnP') {
           steps {
             container('kaniko') {
-              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/mikejonesey/dso-demo'
+              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/mikejonesey/dso-demo:${BRANCH_NAME}-${COMMIT_HASH}-${BUILD_TS}'
             }
           }
         }
