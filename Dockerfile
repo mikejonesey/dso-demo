@@ -7,7 +7,7 @@ RUN mvn package -DskipTests
 FROM openjdk:18-alpine AS run
 
 # Sec Patch
-RUN apk update && apk upgrade libtasn1
+RUN apk update && apk upgrade libtasn1 zlib
 
 # Setup
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /run/demo.jar
