@@ -7,9 +7,8 @@ pipeline {
     }
   }
   environment {
-    COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
-    IMAGE_TAG = "${BRANCH_NAME}-${COMMIT_HASH}-${BUILD_TS}"
+    IMAGE_TAG = "${BRANCH_NAME}-${GIT_COMMIT,length=7}-${BUILD_TS}"
   }
   stages {
     stage('Build') {
