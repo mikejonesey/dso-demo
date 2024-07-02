@@ -9,6 +9,7 @@ pipeline {
   environment {
     COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
+    IMAGE_TAG = "${BRANCH_NAME}-${COMMIT_HASH}-${BUILD_TS}"
   }
   stages {
     stage('Build') {
@@ -108,7 +109,7 @@ pipeline {
         stage('OCI Image BnP') {
           steps {
             container('kaniko') {
-              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/mikejonesey/dso-demo:${BRANCH_NAME}-${COMMIT_HASH}-${BUILD_TS}'
+              sh "/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/mikejonesey/dso-demo:${IMAGE_TAG}"
             }
           }
         }
@@ -122,7 +123,7 @@ pipeline {
         stage('Image Linting') {
           steps {
             container('docker-tools') {
-              sh 'dockle mikejonesey/dso-demo'
+              sh "dockle mikejonesey/dso-demo:${IMAGE_TAG}"
             }
           }
         }
@@ -130,7 +131,7 @@ pipeline {
         stage('Image Scanning') {
           steps {
             container('docker-tools') {
-              sh 'trivy image --timeout 10m --exit-code 1 mikejonesey/dso-demo'
+              sh "trivy image --timeout 10m --exit-code 1 mikejonesey/dso-demo:${IMAGE_TAG}"
             }
           }
         }
