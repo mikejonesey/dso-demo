@@ -144,7 +144,7 @@ pipeline {
         AUTH_TOKEN = credentials('argocd-jenkins-deploy-token')
       }
       steps {
-        container('docker-tools') {
+        container('dind') {
           sh 'docker run -t schoolofdevops/argocd-cli argocd app sync \
             dso-demo --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
           sh 'docker run -t schoolofdevops/argocd-cli argocd app wait \

@@ -13,6 +13,11 @@ spec:
       volumeMounts:
         - name: m2
           mountPath: /root/.m2/
+    - name: dind
+      image: docker:dind-rootless
+      command:
+        - cat
+      tty: true
     - name: docker-tools
       image: mikejonesey/docker-tools:latest
       command:
