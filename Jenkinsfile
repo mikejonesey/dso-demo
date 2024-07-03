@@ -9,6 +9,7 @@ pipeline {
   environment {
     BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
     IMAGE_TAG = "${BRANCH_NAME}-${GIT_COMMIT[0..7]}-${BUILD_TS}"
+    ARGO_SERVER = '34.32.193.61:32100'
   }
   stages {
     stage('Build') {
@@ -139,11 +140,20 @@ pipeline {
     }
 
     stage('Deploy to Dev') {
+      environment {
+        AUTH_TOKEN = credentials('argocd-jenkins-deploy-token')
+      }
       steps {
-        // TODO
-        sh "echo done"
+        container('docker-tools') {
+          sh 'docker run -t schoolofdevops/argocd-cli argocd app sync
+            dso-demo --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
+          sh 'docker run -t schoolofdevops/argocd-cli argocd app wait
+            dso-demo --health --timeout 300
+            --insecure --server $ARGO_SERVER
+            --auth-token $AUTH_TOKEN'
+        }
       }
     }
+
   }
-    
 }
