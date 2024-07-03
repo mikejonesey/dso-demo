@@ -12,6 +12,7 @@ pipeline {
     ARGO_SERVER = '34.32.193.61:32100'
   }
   stages {
+
     stage('Build') {
       parallel {
         stage('Compile') {
@@ -23,6 +24,7 @@ pipeline {
         }
       }
     }
+
     stage('Static Analysis') {
       parallel {
 
@@ -82,16 +84,22 @@ pipeline {
       }
     }
     
-    stage('SAST') {
-      steps {
-        container('slscan') {
-          sh 'scan --type java,depscan --build'
+    stage('SAST Static Testing') {
+      parallel {
+
+        stage('scan') {
+          steps {
+            container('slscan') {
+              sh 'scan --type java,depscan --build'
+            }
+          }
+          post {
+            success {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
+            }
+          }
         }
-      }
-      post {
-        success {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/*', fingerprint: true, onlyIfSuccessful: true
-        }
+        
       }
     }
     

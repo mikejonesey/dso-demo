@@ -18,14 +18,15 @@ spec:
       command:
         - cat
       tty: true
+      volumeMounts:
+        - mountPath: /var/run
+          name: docker-sock
     - name: docker-tools
       image: mikejonesey/docker-tools:latest
       command:
         - cat
       tty: true
       volumeMounts:
-        - mountPath: /var/run
-          name: docker-sock
         - mountPath: /tmp/trivycache/
           name: trivycache
     - name: trufflehog
