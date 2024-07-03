@@ -56,7 +56,13 @@ spec:
       image: shiftleft/sast-scan:v2.1.2
       imagePullPolicy: Always
       command:
-        - cat 
+        - cat
+      tty: true
+    - name: zap
+      image: zaproxy/zap-stable
+      imagePullPolicy: Always
+      command:
+        - cat
       tty: true
   volumes:
     - name: m2
