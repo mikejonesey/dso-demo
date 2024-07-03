@@ -10,6 +10,7 @@ pipeline {
     BUILD_TS = sh(returnStdout: true, script: 'date +%s').trim()
     IMAGE_TAG = "${BRANCH_NAME}-${GIT_COMMIT[0..7]}-${BUILD_TS}"
     ARGO_SERVER = '34.32.193.61:32100'
+    DEV_URL = 'http://34.32.193.61:30080/'
   }
   stages {
 
