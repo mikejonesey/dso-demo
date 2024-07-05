@@ -23,6 +23,7 @@ spec:
           name: docker-sock
     - name: docker-tools
       image: mikejonesey/docker-tools:latest
+      imagePullPolicy: Always
       command:
         - cat
       tty: true
